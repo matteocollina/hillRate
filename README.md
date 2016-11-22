@@ -32,3 +32,6 @@ Easy Rating Plugin
         nameInput: "rating",
         responsive: true 
     });
+
+
+![alt tag](https://s-media-cache-ak0.pinimg.com/originals/d5/5f/4c/d55f4c460274d31b9875926331545c63.png)
