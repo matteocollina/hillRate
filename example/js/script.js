@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     $('.rating-star-1').hillRate();
     
     $('.rating-star-2').hillRate({
@@ -20,11 +20,17 @@ $(document).ready(function () {
     });
     
     $('.rating-star-5').hillRate({
+        stars : 3,
+        valuesStar : [0,1,2], 
+        titleStar: [[""],[""],[""]],
         showSelectedValue:true,
         responsive: true
     });
     $('.rating-star-6').hillRate({
+        stars : 3,
         imageStar: {"default":'img/star-empty-gold.png',"full":"img/star-full-gold.png","half":"img/star-half-gold.png"} ,
+        valuesStar : [0,1,2], 
+        titleStar: [[""],[""],[""]], 
         showSelectedValue:true,
         responsive: true
     });
@@ -38,7 +44,7 @@ $(document).ready(function () {
         titleStar: [["Insufficient"],["almost enough","Enough"],["More than enough","Good"],["More than good","Exceptional"],["Extraordinary","excellent"],["Incredible","Wow!"]], 
         nameInput: "rating",
         responsive: true,
-        showSelectedValue:true
+        showSelectedValue:false
     });
   
 });

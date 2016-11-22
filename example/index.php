@@ -6,13 +6,6 @@
     <head>
         <meta charset="UTF-8">
         <title>Hill Rate Plugin</title>
-        
-        <!-- JS -->
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-        <script type="text/javascript" src="../plugin/js/hillRate-jquery.js"></script>
-        <script type="text/javascript" src="js/script.js"></script>
-        
-        
     </head>
     <body>
         <style>
@@ -77,4 +70,10 @@
         <div class="rating-star-7"></div>    
 
     </body>
+    <footer>
+        <!-- JS -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="../plugin/js/hillRate-jquery.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </footer>
 </html>

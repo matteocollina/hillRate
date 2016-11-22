@@ -7,24 +7,34 @@ $(document).ready(function () {
 
 
     (function ($) {
+        
+        var defaults = {
+            stars : 3, 
+            imageStar: {"default":'img/star-empty.png',"full":"img/star-full.png","half":"img/star-half.png"} ,
+            valuesStar : [0,1,2], 
+            nameInput: "rating",
+            responsive: false,
+            showSelectedValue:false
+        };
 
 
         var methods = {
             init: function (options) {
                 console.log('Init hillRate');
                 var rating = $(this);
-                var numStar = options.stars;
+                var settings = $.extend({}, defaults, options);
+                var numStar = settings.stars;
 
-                var imageStarDefault = options.imageStar.default ? options.imageStar.default : 'img/star-empty.png';
-                var imageStarFull = options.imageStar.full ? options.imageStar.full : 'img/star-full.png';
-                var imageStarHalf = options.imageStar.half ? options.imageStar.half : 'img/star-half.png';
-                var state_unselected = options.imageStar.state_unselected ? options.imageStar.state_unselected : 'full';
+                var imageStarDefault = settings.imageStar.default;
+                var imageStarFull = settings.imageStar.full ;
+                var imageStarHalf = settings.imageStar.half ;
+                var state_unselected = settings.imageStar.state_unselected ? settings.imageStar.state_unselected : 'full';
 
-                var imageStarOnIndex = options.imageStarOnIndex;
-                var valuesStar = options.valuesStar ? options.valuesStar : methods.initialValues(numStar);
-                var nameInput = options.nameInput ? options.nameInput : "rating";
-                var responsive = options.responsive ? options.responsive : false;
-                var showSelectedValue = options.showSelectedValue ? true : false;
+                var imageStarOnIndex = settings.imageStarOnIndex;
+                var valuesStar = settings.valuesStar ? settings.valuesStar : methods.initialValues(numStar);
+                var nameInput = settings.nameInput ;
+                var responsive = settings.responsive;
+                var showSelectedValue = settings.showSelectedValue;
 
                 rating.html('');
                 var styleContent = responsive ? 'style="width:100%"' : '';
@@ -37,7 +47,7 @@ $(document).ready(function () {
                     var stateUnselected = state_unselected;
 
                     var valStar = valuesStar[i];
-                    var titleStar = options.titleStar ? options.titleStar[i] : "";
+                    var titleStar = settings.titleStar ? settings.titleStar[i] : "";
 
                     if (imageStarOnIndex) {
                         for (var j = 0; j < imageStarOnIndex.length; j++) {
@@ -53,7 +63,7 @@ $(document).ready(function () {
                     var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
                     var styleItem = responsive ? 'style="width:' + percentual + '%"' : '';
                     rating.append('<img data-id="' + i + '" class="item-rate" data-title="' + titleStar + '" data-value="[' + valStar + ']" data-half="' + imgHalf + '" data-full="' + imgFull + '" data-default="' + img + '" data-unselected="' + stateUnselected + '" src="' + img + '" ' + styleItem + '>');
-                    $('.item-rate').unbind("click").bind("click", {item: $(this), options: options}, methods.selectStar);
+                    $('.item-rate').unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
                 }
                 /* selected value */
                 var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
@@ -62,7 +72,7 @@ $(document).ready(function () {
 
                 /* input  */
                 rating.append(' <input name="' + nameInput + '" type="hidden">');
-                if (options.titleStar) {
+                if (settings.titleStar) {
                     rating.append(' <p style="width: 100%;text-align: center;"></p> ');
                 }
                 rating.append('</div>');
@@ -76,6 +86,7 @@ $(document).ready(function () {
                 return values;
             },
             selectStar: function (e) {
+                var settings = $.extend({}, defaults, e.data.options);
                 var item = $(e.target); /* get this */
                 var val = item.data('value');
                 var titles = item.data('title').split(",");
@@ -134,11 +145,10 @@ $(document).ready(function () {
                     item.siblings('p').text(title);
                 }
 
-                var showSelectedValue = e.data.options.showSelectedValue;
+                var showSelectedValue = settings.showSelectedValue;
                 if (showSelectedValue) {
                     item.siblings('.selected_value').text(selected);
                 }
-                //var options = e.data.options;
             }
         };
 
@@ -155,4 +165,8 @@ $(document).ready(function () {
         };
 
     })(jQuery);
+    
+    
+    
+    
 });
