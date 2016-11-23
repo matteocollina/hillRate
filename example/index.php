@@ -29,7 +29,7 @@
         
         <h1>1) Basic</h1>
         <h2>Without options</h2>
-        <div class="rating-star-1"></div>    
+        <div class="rating-star-1" data-value='2'></div>    
         
         <hr>
         
