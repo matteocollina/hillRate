@@ -20,17 +20,11 @@ $(document).ready(function () {
     });
     
     $('.rating-star-5').hillRate({
-        stars : 3,
-        valuesStar : [0,1,2], 
-        titleStar: [[""],[""],[""]],
-        showSelectedValue:true,
-        responsive: true
+        responsive: true,
+        showSelectedValue:true
     });
     $('.rating-star-6').hillRate({
-        stars : 3,
         imageStar: {"default":'img/star-empty-gold.png',"full":"img/star-full-gold.png","half":"img/star-half-gold.png"} ,
-        valuesStar : [0,1,2], 
-        titleStar: [[""],[""],[""]], 
         showSelectedValue:true,
         responsive: true
     });

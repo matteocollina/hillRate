@@ -35,12 +35,13 @@ $(document).ready(function () {
                 var nameInput = settings.nameInput ;
                 var responsive = settings.responsive;
                 var showSelectedValue = settings.showSelectedValue;
-
+                
                 rating.html('');
                 var styleContent = responsive ? 'style="width:100%"' : '';
                 rating.append('<div ' + styleContent + '>');
-
+                
                 for (var i = 0; i < numStar; i++) {
+                    
                     var img = imageStarDefault;
                     var imgFull = imageStarFull;
                     var imgHalf = imageStarHalf;
@@ -63,8 +64,9 @@ $(document).ready(function () {
                     var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
                     var styleItem = responsive ? 'style="width:' + percentual + '%"' : '';
                     rating.append('<img data-id="' + i + '" class="item-rate" data-title="' + titleStar + '" data-value="[' + valStar + ']" data-half="' + imgHalf + '" data-full="' + imgFull + '" data-default="' + img + '" data-unselected="' + stateUnselected + '" src="' + img + '" ' + styleItem + '>');
-                    $('.item-rate').unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
                 }
+                rating.children(".item-rate").unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
+                
                 /* selected value */
                 var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
                 var styleItem = responsive ? 'style="width:' + percentual + '%;float: right;text-align:center;margin-top:10px;font-size:20px;"' : '';
@@ -86,7 +88,6 @@ $(document).ready(function () {
                 return values;
             },
             selectStar: function (e) {
-                var settings = $.extend({}, defaults, e.data.options);
                 var item = $(e.target); /* get this */
                 var val = item.data('value');
                 var titles = item.data('title').split(",");
@@ -145,7 +146,9 @@ $(document).ready(function () {
                     item.siblings('p').text(title);
                 }
 
-                var showSelectedValue = settings.showSelectedValue;
+                console.dir(e.data.options);
+                var showSelectedValue = e.data.options.showSelectedValue;
+                
                 if (showSelectedValue) {
                     item.siblings('.selected_value').text(selected);
                 }
