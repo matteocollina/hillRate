@@ -22,6 +22,10 @@ Easy Rating Plugin
 
 -responsive: default false
 
+-showSelectedValue: (default false) Print current valueStar selected.
+
+-edit: (default true) you can choose if use hillRate as input checkbox or only img.
+
 
     $('.rating-star').hillRate({  
         stars : 6, 
@@ -30,8 +34,16 @@ Easy Rating Plugin
         valuesStar : [0,[1,2],[3,4],[5,6],[7,8],[9,10]],  
         titleStar: [["Insufficient"],["Almoust Enough","Enough"],["More than enough","Good"],["More than good","Cool"],["extraordinary","Excellent"],["Incredible","WOW!!!"]], 
         nameInput: "rating",
-        responsive: true 
+        responsive: true,
+        showSelectedValue:true,
+        edit:true
     });
+
+
+Other Info:
+1) You can set initial value from Html (in my case I use twig to match data).
+
+<div class="rating-star" data-value='3'></div>
 
 
 ![alt tag](https://s-media-cache-ak0.pinimg.com/originals/d5/5f/4c/d55f4c460274d31b9875926331545c63.png)

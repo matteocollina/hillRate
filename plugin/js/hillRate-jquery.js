@@ -14,7 +14,8 @@ $(document).ready(function () {
             valuesStar : [0,1,2], 
             nameInput: "rating",
             responsive: false,
-            showSelectedValue:false
+            showSelectedValue:false,
+            edit:true
         };
 
 
@@ -35,6 +36,8 @@ $(document).ready(function () {
                 var nameInput = settings.nameInput ;
                 var responsive = settings.responsive;
                 var showSelectedValue = settings.showSelectedValue;
+                var edit = settings.edit;
+                var initialValue = rating.data('value');
                 
                 rating.html('');
                 var styleContent = responsive ? 'style="width:100%"' : '';
@@ -65,7 +68,13 @@ $(document).ready(function () {
                     var styleItem = responsive ? 'style="width:' + percentual + '%"' : '';
                     rating.append('<img data-id="' + i + '" class="item-rate" data-title="' + titleStar + '" data-value="[' + valStar + ']" data-half="' + imgHalf + '" data-full="' + imgFull + '" data-default="' + img + '" data-unselected="' + stateUnselected + '" src="' + img + '" ' + styleItem + '>');
                 }
+                
+                
+                /* bind click function to select star */
                 rating.children(".item-rate").unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
+                if(!edit){
+                   rating.children(".item-rate").css({"pointer-events":"none"}); 
+                }
                 
                 /* selected value */
                 var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
@@ -77,6 +86,12 @@ $(document).ready(function () {
                 if (settings.titleStar) {
                     rating.append(' <p style="width: 100%;text-align: center;"></p> ');
                 }
+                
+                /* set initial selected value if exist*/
+                if(initialValue){
+                    methods.setInitialDataOfRating(rating,initialValue);
+                }
+                
                 rating.append('</div>');
             },
             /* Initialize values of each star */
@@ -87,71 +102,160 @@ $(document).ready(function () {
                 }
                 return values;
             },
-            selectStar: function (e) {
-                var item = $(e.target); /* get this */
-                var val = item.data('value');
-                var titles = item.data('title').split(",");
-                var id = item.data('id');
-
-                var selected = 0;
-                var title = "";
-
-                /* if is half star */
-                if (val.length == 2) {
-                    var pWidth = item.innerWidth();
-                    var pOffset = item.offset();
-                    var x = e.pageX - pOffset.left;
-                    if (pWidth / 2 > x) {
-                        selected = val[0];
-                        title = titles[0];
-                    }
-                    else {
-                        selected = val[1];
-                        title = titles[1];
-                    }
+            /* Prende il valore selezionato */
+            getSelectedValue: function (star,x) {
+                var val = star.data('value');                
+                if(x){
+                  return methods.getSelectedOnStar(star,val,x);   
                 }
-                /* if full star */
-                else {
-                    selected = val[0];
-                    title = titles[0];
+            },
+            /* Prende il titolo selezionato */
+            getSelectedTitle: function (star,x) {
+                var val = star.data('title').split(",");               
+                if(x){
+                  return methods.getSelectedOnStar(star,val,x); 
                 }
-
-                /* other stars */
-                var allStars = item.siblings('.item-rate');
-                allStars.each(function (index) {
-                    /* full star colored */
+            },
+            getSelectedOnStar: function(star,val,x){
+              /* Se è specificato la X vuol dire che l'utente ha selezionato tramite click */
+                  if (val.length == 2) {
+                        var pWidth = star.innerWidth();
+                        if (pWidth / 2 > x) {
+                            return  val[0];
+                        }
+                        else {
+                            return  val[1];
+                        }
+                    }else {
+                        return val[0];
+                    }  
+            },
+            /* set status of ther stars depend on selected star ID*/
+            setStatusOtherStarForSelectedId: function(star){
+                var id = star.data('id');
+                var allStars = star.siblings('.item-rate');
+                allStars.each(function () {
+                    // full star colored 
                     if ($(this).data('id') < id) {
                         var state = $(this).data('unselected');
                         $(this).attr('src', $(this).data(state));
                     } else if ($(this).data('id') > id) {
-                        /* empty star because not selected */
+                        // empty star because not selected 
                         $(this).attr('src', $(this).data('default'));
                     }
                 });
-                /* this stars could be half*/
+            },
+            setStatusThisStarForSelectedValue: function(star,selected){
+                var val = star.data('value');
                 if (val.length == 2) {
-                    /* if star is half selected */
+                    // if star is half selected 
                     if (val[0] == selected) {
-                        item.attr('src', item.data('half'));
+                        star.attr('src', star.data('half'));
                     } else {
-                        item.attr('src', item.data('full'));
+                        star.attr('src', star.data('full'));
                     }
                 } else {
-                    /* this stars is full*/
-                    item.attr('src', item.data('full'));
+                    // this stars is full
+                    star.attr('src', star.data('full'));
                 }
-
-                item.siblings('input').val(selected);
+            },
+            setInput: function(star,selected){
+                star.siblings('input').val(selected);
+            },
+            setTitle: function(star,title){
                 if (title != "") {
-                    item.siblings('p').text(title);
+                    star.siblings('p').text(title);
                 }
-
-                console.dir(e.data.options);
-                var showSelectedValue = e.data.options.showSelectedValue;
-                
+            },
+            setShowedValue: function(star,showSelectedValue,selected){
                 if (showSelectedValue) {
-                    item.siblings('.selected_value').text(selected);
-                }
+                    star.siblings('.selected_value').text(selected);
+                } 
+            },
+            getStarOfRatingWithValue: function(rating,val){
+                /* cerco la stella che ha quel valore del rating */
+                var items = rating.children('.item-rate');
+                var currStar;
+                items.each(function( index ) {
+                    var star = $(this);
+                    var valori = star.data('value');
+                    
+                    if(valori.length > 1){
+                        if(valori[0] == val){
+                            currStar= star;
+                            return false;
+                        }else if(valori[1] == val){
+                            currStar= star;
+                            return false;
+                        }
+                    }else{
+                        if(valori[0] == val){
+                            currStar= star;
+                            return false;
+                        }
+                    }
+                });
+                return currStar;
+            },
+            /* cerco il titolo della stella che ha quel valore del rating */
+            getTitleOfRatingWithValue: function(rating,val){
+                var items = rating.children('.item-rate');
+                var currTitle;
+                items.each(function( index ) {
+                    var star = $(this);
+                    var valori = star.data('value');
+                    var titles = star.data('title').split(",");    
+                    
+                    if(valori.length > 1){
+                        if(valori[0] == val){
+                            currTitle= titles[0];
+                            return false;
+                        }else if(valori[1] == val){
+                            currTitle= titles[1];
+                            return false;
+                        }
+                    }else{
+                        if(valori[0] == val){
+                            currTitle= titles[0];
+                            return false;
+                        }
+                    }
+                });
+                return currTitle;
+            },
+            /* When user ONCLICK on Star*/
+            selectStar: function (e) {
+                var item = $(e.target); /* star selected */
+
+                var pOffset = item.offset();
+                var x = e.pageX - pOffset.left;
+                
+                var selected = methods.getSelectedValue(item,x);
+                var title = methods.getSelectedTitle(item,x);
+                
+               methods.setStatusOtherStarForSelectedId(item);
+               methods.setStatusThisStarForSelectedValue(item,selected);
+
+               methods.setInput(item,selected);
+               methods.setTitle(item,title);
+
+               var showSelectedValue = e.data.options.showSelectedValue;
+               methods.setShowedValue(item,showSelectedValue,selected);
+            },
+            setInitialDataOfRating: function (rating,initialValue) {
+                var options = $.fn.hillRate.arguments[0];
+                var settings = $.extend({}, defaults, options);
+                
+                var title = methods.getTitleOfRatingWithValue(rating,initialValue);
+                
+                var item = methods.getStarOfRatingWithValue(rating,initialValue); //star with curr value
+                methods.setStatusOtherStarForSelectedId(item);
+                methods.setStatusThisStarForSelectedValue(item,initialValue);
+                
+               methods.setInput(item,initialValue);
+               methods.setTitle(item,title);
+               
+               methods.setShowedValue(item,settings.showSelectedValue,initialValue);
             }
         };
 

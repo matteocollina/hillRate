@@ -20,8 +20,8 @@ $(document).ready(function () {
     });
     
     $('.rating-star-5').hillRate({
-        responsive: true,
-        showSelectedValue:true
+        valuesStar : [0,20,40],
+        edit:false
     });
     $('.rating-star-6').hillRate({
         imageStar: {"default":'img/star-empty-gold.png',"full":"img/star-full-gold.png","half":"img/star-half-gold.png"} ,
