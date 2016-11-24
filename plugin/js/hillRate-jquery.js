@@ -179,7 +179,19 @@ $(document).ready(function () {
             },
             /* Check if exist init value in array of possible values*/
             existInitValueOfStar: function(val,array){
-                return $.inArray(val, array) == -1 ? false : true;
+                var found = false;
+                for(var i=0; i<array.length;i++){
+                    if(array[i] instanceof Array){
+                        if($.inArray(val, array[i]) != -1 ){
+                            found = true;
+                        }
+                    }else{
+                        if(val == array[i]){
+                            found = true;
+                        }
+                    }
+                }
+                return found;
             },
             getStarOfRatingWithValue: function(rating,val){
                 /* cerco la stella che ha quel valore del rating */
