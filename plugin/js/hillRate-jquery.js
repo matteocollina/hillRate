@@ -88,8 +88,12 @@ $(document).ready(function () {
                 }
                 
                 /* set initial selected value if exist*/
-                if(initialValue){
-                    methods.setInitialDataOfRating(rating,initialValue);
+                if(initialValue >= 0){
+                    if (methods.existInitValueOfStar(initialValue, settings.valuesStar)){
+                        methods.setInitialDataOfRating(rating,initialValue);
+                    }else{
+                        console.log("Init value not found on possible values");
+                    }
                 }
                 
                 rating.append('</div>');
@@ -147,6 +151,7 @@ $(document).ready(function () {
             },
             setStatusThisStarForSelectedValue: function(star,selected){
                 var val = star.data('value');
+
                 if (val.length == 2) {
                     // if star is half selected 
                     if (val[0] == selected) {
@@ -171,6 +176,10 @@ $(document).ready(function () {
                 if (showSelectedValue) {
                     star.siblings('.selected_value').text(selected);
                 } 
+            },
+            /* Check if exist init value in array of possible values*/
+            existInitValueOfStar: function(val,array){
+                return $.inArray(val, array) == -1 ? false : true;
             },
             getStarOfRatingWithValue: function(rating,val){
                 /* cerco la stella che ha quel valore del rating */

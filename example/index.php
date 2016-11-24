@@ -55,7 +55,7 @@
         <div class='col-2'>
             <h1>5) Print Selected Value & Responsive</h1>
             <h2>Prints value of star selected</h2>
-            <div class="rating-star-5" data-value='20'></div>
+            <div class="rating-star-5" data-value='1'></div>
         </div>
         <div class='col-2'>
             <h1>6) Print Selected Value & Responsive</h1>
