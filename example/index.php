@@ -55,19 +55,19 @@
         <div class='col-2'>
             <h1>5) Print Selected Value & Responsive</h1>
             <h2>Prints value of star selected</h2>
-            <div class="rating-star-5"></div>
+            <div class="rating-star-5" data-value='20'></div>
         </div>
         <div class='col-2'>
             <h1>6) Print Selected Value & Responsive</h1>
             <h2>Prints value of star selected</h2>
-            <div class="rating-star-5"></div>
+            <div class="rating-star-5" data-value='20'></div>
         </div>
         
         <hr>
         
         <h1>7) Complete </h1>
         <h2>An example with all options and change of state for custom star</h2>
-        <div class="rating-star-7" data-value='1'></div>    
+        <div class="rating-star-7" data-value='10'></div>    
 
     </body>
     <footer>

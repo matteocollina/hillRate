@@ -7,96 +7,107 @@ $(document).ready(function () {
 
 
     (function ($) {
-        
+
         var defaults = {
-            stars : 3, 
-            imageStar: {"default":'img/star-empty.png',"full":"img/star-full.png","half":"img/star-half.png"} ,
-            valuesStar : [0,1,2], 
+            stars: 3,
+            imageStar: {"default": 'img/star-empty.png', "full": "img/star-full.png", "half": "img/star-half.png"},
+            valuesStar: [0, 1, 2],
             nameInput: "rating",
             responsive: false,
-            showSelectedValue:false,
-            edit:true
+            showSelectedValue: false,
+            edit: true
         };
 
 
         var methods = {
             init: function (options) {
                 console.log('Init hillRate');
-                var rating = $(this);
-                var settings = $.extend({}, defaults, options);
-                var numStar = settings.stars;
+                var ratings = $(this);
+                console.dir(ratings);
 
-                var imageStarDefault = settings.imageStar.default;
-                var imageStarFull = settings.imageStar.full ;
-                var imageStarHalf = settings.imageStar.half ;
-                var state_unselected = settings.imageStar.state_unselected ? settings.imageStar.state_unselected : 'full';
-
-                var imageStarOnIndex = settings.imageStarOnIndex;
-                var valuesStar = settings.valuesStar ? settings.valuesStar : methods.initialValues(numStar);
-                var nameInput = settings.nameInput ;
-                var responsive = settings.responsive;
-                var showSelectedValue = settings.showSelectedValue;
-                var edit = settings.edit;
-                var initialValue = rating.data('value');
-                
-                rating.html('');
-                var styleContent = responsive ? 'style="width:100%"' : '';
-                rating.append('<div ' + styleContent + '>');
-                
-                for (var i = 0; i < numStar; i++) {
+                /* if rating has same class*/
+                ratings.each(function(index){
                     
-                    var img = imageStarDefault;
-                    var imgFull = imageStarFull;
-                    var imgHalf = imageStarHalf;
-                    var stateUnselected = state_unselected;
+                    var rating = $(this);                    
+                    
+                    var settings = $.extend({}, defaults, options);
+                    var numStar = settings.stars;
 
-                    var valStar = valuesStar[i];
-                    var titleStar = settings.titleStar ? settings.titleStar[i] : "";
+                    var imageStarDefault = settings.imageStar.default;
+                    var imageStarFull = settings.imageStar.full;
+                    var imageStarHalf = settings.imageStar.half;
+                    var state_unselected = settings.imageStar.state_unselected ? settings.imageStar.state_unselected : 'full';
 
-                    if (imageStarOnIndex) {
-                        for (var j = 0; j < imageStarOnIndex.length; j++) {
-                            var thisImageStarOnIndex = imageStarOnIndex[j];
-                            if (thisImageStarOnIndex.index == i) {
-                                img = thisImageStarOnIndex.default;
-                                imgFull = thisImageStarOnIndex.full;
-                                imgHalf = thisImageStarOnIndex.half;
-                                stateUnselected = thisImageStarOnIndex.state_unselected ? thisImageStarOnIndex.state_unselected : "full";
+                    var imageStarOnIndex = settings.imageStarOnIndex;
+                    var valuesStar = settings.valuesStar ? settings.valuesStar : methods.initialValues(numStar);
+                    var nameInput = settings.nameInput;
+                    var responsive = settings.responsive;
+                    var showSelectedValue = settings.showSelectedValue;
+                    var edit = settings.edit;
+                    var initialValue = rating.data('value');
+
+                    rating.html('');
+                    var styleContent = responsive ? 'style="width:100%"' : '';
+                    rating.append('<div ' + styleContent + '>');
+
+                    for (var i = 0; i < numStar; i++) {
+
+                        var img = imageStarDefault;
+                        var imgFull = imageStarFull;
+                        var imgHalf = imageStarHalf;
+                        var stateUnselected = state_unselected;
+
+                        var valStar = valuesStar[i];
+                        var titleStar = settings.titleStar ? settings.titleStar[i] : "";
+
+                        if (imageStarOnIndex) {
+                            for (var j = 0; j < imageStarOnIndex.length; j++) {
+                                var thisImageStarOnIndex = imageStarOnIndex[j];
+                                if (thisImageStarOnIndex.index == i) {
+                                    img = thisImageStarOnIndex.default;
+                                    imgFull = thisImageStarOnIndex.full;
+                                    imgHalf = thisImageStarOnIndex.half;
+                                    stateUnselected = thisImageStarOnIndex.state_unselected ? thisImageStarOnIndex.state_unselected : "full";
+                                }
                             }
                         }
+                        var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
+                        var styleItem = responsive ? 'style="width:' + percentual + '%"' : '';
+                        rating.append('<img data-id="' + i + '" class="item-rate" data-title="' + titleStar + '" data-value="[' + valStar + ']" data-half="' + imgHalf + '" data-full="' + imgFull + '" data-default="' + img + '" data-unselected="' + stateUnselected + '" src="' + img + '" ' + styleItem + '>');
                     }
-                    var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
-                    var styleItem = responsive ? 'style="width:' + percentual + '%"' : '';
-                    rating.append('<img data-id="' + i + '" class="item-rate" data-title="' + titleStar + '" data-value="[' + valStar + ']" data-half="' + imgHalf + '" data-full="' + imgFull + '" data-default="' + img + '" data-unselected="' + stateUnselected + '" src="' + img + '" ' + styleItem + '>');
-                }
-                
-                
-                /* bind click function to select star */
-                rating.children(".item-rate").unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
-                if(!edit){
-                   rating.children(".item-rate").css({"pointer-events":"none"}); 
-                }
-                
-                /* selected value */
-                var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
-                var styleItem = responsive ? 'style="width:' + percentual + '%;float: right;text-align:center;margin-top:10px;font-size:20px;"' : '';
-                rating.append(' <div class="selected_value" ' + styleItem + '></div>');
 
-                /* input  */
-                rating.append(' <input name="' + nameInput + '" type="hidden">');
-                if (settings.titleStar) {
-                    rating.append(' <p style="width: 100%;text-align: center;"></p> ');
-                }
-                
-                /* set initial selected value if exist*/
-                if(initialValue >= 0){
-                    if (methods.existInitValueOfStar(initialValue, settings.valuesStar)){
-                        methods.setInitialDataOfRating(rating,initialValue);
-                    }else{
-                        console.log("Init value not found on possible values");
+
+                    /* bind click function to select star */
+                    rating.children(".item-rate").unbind("click").bind("click", {item: $(this), options: settings}, methods.selectStar);
+                    if (!edit) {
+                        rating.children(".item-rate").css({"pointer-events": "none"});
                     }
-                }
-                
-                rating.append('</div>');
+
+                    /* selected value */
+                    var percentual = 100 / (numStar + (showSelectedValue ? 1 : 0));
+                    var styleItem = responsive ? 'style="width:' + percentual + '%;float: right;text-align:center;margin-top:10px;font-size:20px;"' : '';
+                    rating.append(' <div class="selected_value" ' + styleItem + '></div>');
+
+                    /* input  */
+                    rating.append(' <input name="' + nameInput + '" type="hidden">');
+                    if (settings.titleStar) {
+                        rating.append(' <p style="width: 100%;text-align: center;"></p> ');
+                    }
+
+                    /* set initial selected value if exist*/
+                    if (initialValue >= 0) {
+                        if (methods.existInitValueOfStar(initialValue, settings.valuesStar)) {
+                            methods.setInitialDataOfRating(rating, initialValue);
+                        } else {
+                            console.log("Init value not found on possible values");
+                        }
+                    }
+
+                    rating.append('</div>');
+
+                });
+
+
             },
             /* Initialize values of each star */
             initialValues: function (numStar) {
