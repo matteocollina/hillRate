@@ -2,29 +2,29 @@
 Easy Rating Plugin
 
 
--stars: Number of stars 
+* stars: Number of stars 
 
--imageStar: Custom Image of stars  :
+* imageStar: Custom Image of stars  :
             - default : path img empty star
             - half: path img half star
             - full : path img full star
 
--imageStarOnIndex:  You can specify custom image for index (start: index=0) 
+* imageStarOnIndex:  You can specify custom image for index (start: index=0) 
             - "state_unselected" you can declare state when is not selected (default,half,full), otherwise it's full.
 
--valuesStar: 2 values => half star / 1 value => full star
+* valuesStar: 2 values => half star / 1 value => full star
 
--showSelectedValue: bool that show value selected or not
+* showSelectedValue: bool that show value selected or not
 
--titleStar: title of  each star value - Need to correspond to values structure : if you don't want titles, don't add this option
+* titleStar: title of  each star value - Need to correspond to values structure : if you don't want titles, don't add this option
 
--nameInput: attribute name of input
+* nameInput: attribute name of input
 
--responsive: default false
+* responsive: default false
 
--showSelectedValue: (default false) Print current valueStar selected.
+* showSelectedValue: (default false) Print current valueStar selected.
 
--edit: (default true) you can choose if use hillRate as input checkbox or only img.
+* edit: (default true) you can choose if use hillRate as input checkbox or only img.
 
 
     $('.rating-star').hillRate({  
