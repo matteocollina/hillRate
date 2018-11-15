@@ -1,7 +1,15 @@
 # hillRate
 Easy Rating Plugin
 
+## Example
+```html
+<div class="rating-star" data-value='3'></div>
+```
 
+![alt tag](https://s-media-cache-ak0.pinimg.com/originals/d5/5f/4c/d55f4c460274d31b9875926331545c63.png)
+
+
+## Attributes
 * stars: Number of stars 
 
 * imageStar: Custom Image of stars  :
@@ -40,12 +48,5 @@ Easy Rating Plugin
     });
 
 
-Other Info:
+## Other Info
 1) You can set initial value from Html by adding attribute : data-value='Value' 
-(in my case I use twig to match data).
-
-```html
-<div class="rating-star" data-value='3'></div>
-```
-
-![alt tag](https://s-media-cache-ak0.pinimg.com/originals/d5/5f/4c/d55f4c460274d31b9875926331545c63.png)
