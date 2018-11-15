@@ -34,7 +34,7 @@ Easy Rating Plugin
 
 * edit: (default true) you can choose if use hillRate as input checkbox or only img.
 
-
+```
     $('.rating-star').hillRate({  
         stars : 6, 
         imageStar: {"default":'img/star-empty-gold.png',"full":"img/star-full-gold.png","half":"img/star-half-gold.png"} ,
@@ -46,7 +46,7 @@ Easy Rating Plugin
         showSelectedValue:true,
         edit:true
     });
-
+```
 
 ## Other Info
 1) You can set initial value from Html by adding attribute : data-value='Value' 
